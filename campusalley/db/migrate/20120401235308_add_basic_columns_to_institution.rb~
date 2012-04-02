@@ -1,0 +1,8 @@
+class AddBasicColumnsToInstitution < ActiveRecord::Migration
+  def change
+     change_table(:institutions) do |t|
+      t.string :name
+    end
+ 
+  end
+end
