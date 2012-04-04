@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  acts_as_paranoid
+  #acts_as_paranoid
   
   # attr_accessible :title, :body
   belongs_to :institution
@@ -11,13 +11,21 @@ class User < ActiveRecord::Base
  
   #User roles: 
   #global_admin, inst_admin, regular  
-  def create_user(email, password, institution, role)
-      user = User.new
-      user.email = email
-      user.institution = institution
-      user.role = role
-      @new_password = password
-      user.hash_new_password
+  def self.create_user(params)
+      email = params[:email]
+      password = params[:password]
+      @institution = params[:institution]
+      role = params[:role]
+      
+      if email and password and @institution and role
+	user = User.new
+	user.email = email
+	user.institution = @institution
+	user.institution_id = @institution.id
+	user.role = role
+	@new_password = password
+	user.hash_new_password
+      end
       
       if user.save
 	user

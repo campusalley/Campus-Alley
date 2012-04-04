@@ -4,7 +4,7 @@ class Institution < ActiveRecord::Base
   has_and_belongs_to_many :posts
   has_and_belongs_to_many :venues
   
-  def create_institution(name)
+  def self.create_institution(name)
     inst = Institution.new
     inst.name = name;
     
@@ -16,6 +16,10 @@ class Institution < ActiveRecord::Base
     end
   end
   
+  def add_user_to_institution(params)
+    params.merge({:institution=>self})
+    User.new(params)
+  end
   #def add groups
   #def add users
   #def add map
