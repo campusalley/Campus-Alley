@@ -10,12 +10,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120401235316) do
+ActiveRecord::Schema.define(:version => 20120402025106) do
 
   create_table "institutions", :force => true do |t|
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
-    t.string   "name",       :limit => 200
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "name"
   end
 
   create_table "posts", :force => true do |t|
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20120401235316) do
     t.integer  "user_id_id"
     t.integer  "institution_id_id"
     t.integer  "venue_id_id"
+    t.string   "type",              :limit => 50
   end
 
   create_table "users", :force => true do |t|
