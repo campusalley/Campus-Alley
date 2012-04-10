@@ -1,10 +1,9 @@
 class Institution < ActiveRecord::Base
   # attr_accessible :title, :body
-  has_and_belongs_to_many :users
-  has_and_belongs_to_many :posts
-  has_and_belongs_to_many :venues
+  has_many :users
+  has_many :venues
   
-  def self.create_institution(name)
+    def self.create_institution(name)
     inst = Institution.new
     inst.name = name;
     
@@ -16,19 +15,29 @@ class Institution < ActiveRecord::Base
     end
   end
   
+  def add_venue(params)
+    v = Venue.new
+    v.name = params[:name]
+    v.institution_id = self.object_id
+    v.save
+  end
+  
+  def add_map(filename)
+    file_root = "/public/maps/"
+    self.map = "#{file_root}#{filename}"
+    self.save
+  end
+  
   def add_user_to_institution(params)
     params.merge({:institution=>self})
-    new_user = User.new(params)
+    new_user = User.create_user(params)
     if new_user
       new_user
     else
       nil
     end
   end
-  #def add groups
-  #def add users
-  #def add map
-  #def add venues
+  
   
   
 end

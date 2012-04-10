@@ -1,35 +1,43 @@
 class User < ActiveRecord::Base
   #acts_as_paranoid
+  validates_uniqueness_of :my_column_name
   
   # attr_accessible :title, :body
   belongs_to :institution
   has_and_belongs_to_many :posts
   
-  attr_accessor :new_password, :new_password_confirmation
+  #attr_accessor :new_password, :new_password_confirmation
+  #attr_accessor :email, :role, :institution_id
   validates_confirmation_of :new_password, :if=>:password_changed?
   before_save :hash_new_password, :if=>:password_changed?
  
   #User roles: 
   #global_admin, inst_admin, regular  
-  def self.create_user(params)
-      email = params[:email]
-      password = params[:password]
-      @institution = params[:institution]
-      role = params[:role]
-      
-      if email and password and @institution and role
-	user = User.new
-	user.email = email
-	user.institution = @institution
-	user.institution_id = @institution.id
-	user.role = role
-	@new_password = password
-	user.hash_new_password
-      end
-      
-      if user.save
-	user
+  def create_user(params)
+params = {:email=>"test", :role=>"test", :password=>"test", :institution=>Institution.find(1)}    
+       email = params[:email]
+      @new_password = params[:password]
+      @new_password_confirmation = params[:password]
+       institution = params[:institution]
+       role = params[:role]
+
+ 
+      if  email and @new_password 
+puts "Foop"
+	 user = User.new
+	 user.email =  email
+	 user.institution_id =  institution.id
+	 #user.role =  role
+	#@user.hash_new_password
+
+	if  user.save
+debugger 	  
+	   user
+	else
+	  nil
+	end
       else
+puts "joop"	
 	nil
       end
   end
@@ -55,10 +63,13 @@ class User < ActiveRecord::Base
   end
 
   private
-  # This is where the real work is done, store the BCrypt has in the
+  # This is where the real work is done, store the BCrypt hash in the
   # database
   def hash_new_password
     self.hashed_password = BCrypt::Password.create(@new_password)
   end
+  
+  
+  
     
 end

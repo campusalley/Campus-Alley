@@ -1,0 +1,4 @@
+class AddMapToInstitution < ActiveRecord::Migration
+  def change
+  end
+end
